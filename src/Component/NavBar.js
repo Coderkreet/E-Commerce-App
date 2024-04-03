@@ -15,7 +15,6 @@ function HandleIcon2() {
 
   return (
 
-    
     <div>
       <nav className='flex justify-between mt-10 mb-10 px-10 items-center'>
         <div>
@@ -26,6 +25,7 @@ function HandleIcon2() {
             <ul  className='flex gap-[2.5rem]'>
         <Link to={"/"}><li onClick={HandleIcon2} className='cursor-pointer hover:underline' >Home</li></Link> 
         <Link to={"/About"}>  <li onClick={HandleIcon2} className='cursor-pointer hover:underline' >About</li></Link> 
+        <Link to={"/products"}>  <li onClick={HandleIcon} className='cursor-pointer hover:underline' >products</li></Link> 
         <Link to={"/Contect"}> <li onClick={HandleIcon2} className='cursor-pointer hover:underline' >Contect</li></Link> 
         <Link to={"/SignUp"}>  <li onClick={HandleIcon} className='cursor-pointer hover:underline' >Sign Up</li></Link> 
             </ul>

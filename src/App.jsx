@@ -8,6 +8,7 @@ import Contect from "./Component/Contect";
 import SignUp from "./Component/SignUp";
 import Login from "./Component/Login";
 import { Route, Routes } from "react-router-dom";
+import Card from "./Component/Card";
 
 function App() {
   return (
@@ -18,12 +19,11 @@ function App() {
 <Routes>
 <Route path='/' element={<HomePage/>}/>
 <Route path='/About' element={<About/>}/>
+<Route path='/products' element={<Card/>}/>
 <Route path='/Contect' element={<Contect/>}/>
 <Route path='/SignUp' element={<SignUp/>}/>
 <Route path='/Login' element={<Login/>}/>
 </Routes>
-
-
 
 <Footer/>
 
