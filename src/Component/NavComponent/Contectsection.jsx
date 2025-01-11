@@ -1,7 +1,7 @@
 import React from 'react'
 import {GrMail} from 'react-icons/gr'
 import {BiSolidPhoneCall} from 'react-icons/bi'
-const Contect = () => {
+const Contectsection = () => {
   return (
     <div>
       <div className='flex gap-x-3 mt-4 font-bold'>
@@ -58,4 +58,4 @@ const Contect = () => {
   )
 }
 
-export default Contect
+export default Contectsection
