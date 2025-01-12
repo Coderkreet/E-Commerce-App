@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AiOutlineEye, AiOutlineHeart } from "react-icons/ai";
 import useFetch from "../useFetch";
 import ProductRating from "../ProductRating";
@@ -24,10 +24,15 @@ const Card = () => {
     );
   }
 
+  
+    window.scrollTo(0, 0);
+
+
   // Show error message if API fails
   if (error || error2) {
     return <div className="text-red-500 text-xl">⚠️ Error loading products. Please try again later.</div>;
   }
+  console.log(data);
 
   return (
     <div className="flex items-center justify-center w-[100%]">
@@ -35,7 +40,11 @@ const Card = () => {
         {/* Render first API products */}
         {data.length > 0 &&
           data.map((dataItem) => (
-            <Link to={`/product/${dataItem.id}`} key={dataItem.id} className="flex flex-col bg-gray-100 rounded-md justify-between w-72 h-96 p-4 relative">
+            <Link
+              to={`/product/${dataItem.id}`}
+              key={dataItem.id}
+              className="flex flex-col bg-gray-100 rounded-md justify-between w-72 h-96 p-4 relative shadow-lg transform transition-transform hover:scale-105 hover:shadow-xl"
+            >
               {/* Discount Badge */}
               <div className="absolute left-2 top-2">
                 <p className="bg-red-500 text-white px-2 py-1 rounded-md">{dataItem.discountPercentage}%</p>
@@ -43,13 +52,17 @@ const Card = () => {
 
               {/* Favorite & View Icons */}
               <div className="absolute right-2 top-2 flex flex-col text-xl">
-                <AiOutlineHeart className="bg-white rounded-full mb-2 cursor-pointer hover:text-red-500" />
-                <AiOutlineEye className="bg-white rounded-full cursor-pointer hover:text-blue-500" />
+                <AiOutlineHeart className="bg-white rounded-full mb-2 cursor-pointer hover:text-red-500 transform transition-transform hover:scale-110" />
+                <AiOutlineEye className="bg-white rounded-full cursor-pointer hover:text-blue-500 transform transition-transform hover:scale-110" />
               </div>
 
-              {/* Product Image */}
-              <div className="flex justify-center items-center h-48">
-                <img src={dataItem.thumbnail} className="h-full max-w-full object-cover" alt={dataItem.title} />
+              {/* Product Image with Zoom effect */}
+              <div className="flex justify-center items-center h-48 group overflow-hidden relative">
+                <img
+                  src={dataItem.thumbnail}
+                  className="h-full max-w-full object-cover transition-transform group-hover:scale-110 transform"
+                  alt={dataItem.title}
+                />
               </div>
 
               {/* Product Details */}
@@ -69,16 +82,24 @@ const Card = () => {
         {/* Render second API products */}
         {data2.length > 0 ? (
           data2.map((dataItem) => (
-            <Link to={`/products/${dataItem.id}`} key={dataItem.id} className="flex flex-col bg-gray-100 rounded-md justify-between w-72 h-96 p-4 relative">
+            <Link
+              to={`/products/${dataItem.id}`}
+              key={dataItem.id}
+              className="flex flex-col bg-gray-100 rounded-md justify-between w-72 h-96 p-4 relative shadow-lg transform transition-transform hover:scale-105 hover:shadow-xl"
+            >
               {/* Favorite & View Icons */}
               <div className="absolute right-2 top-2 flex flex-col text-xl">
-                <AiOutlineHeart className="bg-white rounded-full mb-2 cursor-pointer hover:text-red-500" />
-                <AiOutlineEye className="bg-white rounded-full cursor-pointer hover:text-blue-500" />
+                <AiOutlineHeart className="bg-white rounded-full mb-2 cursor-pointer hover:text-red-500 transform transition-transform hover:scale-110" />
+                <AiOutlineEye className="bg-white rounded-full cursor-pointer hover:text-blue-500 transform transition-transform hover:scale-110" />
               </div>
 
-              {/* Product Image */}
-              <div className="flex justify-center items-center h-48">
-                <img src={dataItem.image} className="h-full max-w-full object-cover" alt={dataItem.title} />
+              {/* Product Image with Zoom effect */}
+              <div className="flex justify-center items-center h-48 group overflow-hidden relative">
+                <img
+                  src={dataItem.image}
+                  className="h-full max-w-full object-cover transition-transform group-hover:scale-110 transform"
+                  alt={dataItem.title}
+                />
               </div>
 
               {/* Product Details */}

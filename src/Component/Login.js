@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SignUpimg from "./Image/Signup/dl.beatsnoop 1.png";
 import { Link, useNavigate } from "react-router-dom";
+import Recproduct from "./Recproduct";
 
 const Login = ({setIsLogin}) => {
   // State for form inputs
@@ -82,6 +83,7 @@ const Login = ({setIsLogin}) => {
           </Link>
         </div>
       </div>
+      
     </div>
   );
 };

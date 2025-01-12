@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import ProductRating from "../ProductRating";
+import ProductRating from "../ProductRating"; // Make sure the path is correct
+import Recproduct from "../Recproduct";
 
 const ProductDetails = ({ setCart, cart }) => {
-  const { id } = useParams(); // Get product ID from URL
+  const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -16,124 +17,97 @@ const ProductDetails = ({ setCart, cart }) => {
         setProduct(response.data);
       } catch (err) {
         setError("Failed to fetch product details");
+        console.error("Error fetching product:", err); // Log the error for debugging
       } finally {
         setLoading(false);
       }
     };
 
     fetchProductDetails();
-  }, [id]); // Runs again if the ID in the URL changes
+  }, [id]);
 
   const handleAddToCart = () => {
-    setCart([...cart, product]);
-    alert(`${product.title} added to cart!`);
+    if (product) { // Check if product is loaded
+      setCart([...cart, product]);
+      alert(`${product.title} added to cart!`);
+    }
   };
 
   const handleBuyNow = () => {
-    alert(`Proceeding to checkout with ${product.title}`);
+    if (product) { // Check if product is loaded
+      alert(`Proceeding to checkout with ${product.title}`);
+    }
   };
 
-  if (loading) return <ProductSkeleton />;  // Show skeleton loader when loading
-  if (error) return <div>Error: {error}</div>;
+  if (error) return <div className="text-red-500 p-4">Error: {error}</div>;
+
+  if (!product) return <div>Product not found.</div>; // Handle case where product is null after loading
 
   return (
-    <div className="max-w-[95%] justify-center items-center flex flex-col mx-auto bg-white shadow-md rounded-md">
-      <div className="max-w-[95%] flex mx-auto bg-white shadow-md rounded-md">
-        <div className="w-[100%] h-[100%]">
-          <img src={product.image || product.thumbnail} alt={product.title} className="w-[50%] h-[40rem] object-cover mt-4" />
+    <div className="max-w-[90%] mx-auto p-4 bg-white rounded-lg shadow-md mt-8">
+      <div className="md:flex md:space-x-8">
+        <div className="md:w-1/2">
+          <img
+            src={product.images?.[0] || product.thumbnail} // Use first image from array if available
+            alt={product.title}
+            className="w-full h-auto object-cover rounded-lg"
+          />
         </div>
-        <div className="flex flex-col justify-center items-center">
-          <h2 className="text-3xl font-bold">{product.title}</h2>
-          <div className="flex items-center">
+        <div className="md:w-1/2 mt-4 md:mt-0">
+          <h2 className="text-2xl font-bold mb-2">{product.title}</h2>
+          <div className="flex items-center mb-4">
             <ProductRating rating={product.rating} />
-            <p className="text-gray-500 ml-1">( Reviews {product.reviews?.length || 0} )</p>
+            <span className="text-gray-500 ml-2">({product.rating})</span>
           </div>
-          <p className="text-gray-600 text-2xl w-[75%] mt-2">{product.description}</p>
-          <div>
-            <p className="text-xl font-semibold text-green-700 mt-2">
-              Price: ₹ <span className="line-through text-red-700">{Math.round(product.price * 90.35)}</span> {Math.round(product.price * 74.35)}
-            </p>
+          <p className="text-gray-700 mb-4">{product.description}</p>
+          <div className="flex items-center mb-4">
+            <span className="text-xl font-semibold mr-2">Price: ₹{Math.round(product.price * 74.35)}</span>
+            <span className="text-gray-500 line-through">₹{Math.round(product.price * 90.35)}</span>
           </div>
-          <p className="text-gray-500 mt-2">Stock: {product.stock || "N/A"}</p>
-
-          <div className="mt-6 flex space-x-4">
+          <p className="text-gray-600 mb-4">Stock: {product.stock}</p>
+          <div className="flex space-x-4">
             <button
               onClick={handleAddToCart}
-              className="px-11 py-5 text-2xl bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
               Add to Cart
             </button>
             <button
               onClick={handleBuyNow}
-              className="px-11 py-5 text-2xl bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none"
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
             >
               Buy Now
             </button>
           </div>
         </div>
       </div>
-
-      <h2 className="mx-auto text-3xl mt-9">Reviews Section</h2>
-      {product.reviews?.map((elem, index) => (
-        <div key={index} className="bg-white shadow-md rounded-lg p-6 w-full max-w-full">
-          <div className="flex items-center space-x-4">
-            <div className="bg-blue-500 text-white rounded-full h-12 w-12 flex items-center justify-center font-bold text-lg">
-              {elem.reviewerName[0]}
+      {/* Reviews Section */}
+      {product.reviews && product.reviews.length > 0 && (
+        <div className="mt-8">
+          <h3 className="text-xl font-semibold mb-4">Reviews</h3>
+          {product.reviews.map((review) => (
+            <div key={review.id} className="bg-gray-100 p-4 rounded-lg mb-4">
+              <div className="flex items-center mb-2">
+                <span className="font-semibold">{review.reviewerName}</span>
+                <span className="text-gray-500 ml-2">{review.date}</span>
+              </div>
+              <p>{review.comment}</p>
+               <div className="flex items-center mt-2">
+                <ProductRating rating={review.rating} />
+                <span className="text-gray-500 ml-2">({review.rating})</span>
+              </div>
             </div>
-            <div>
-              <h2 className="text-lg font-semibold">{elem.reviewerName}</h2>
-              <p className="text-gray-500 text-sm">{elem.reviewerEmail}</p>
-            </div>
-          </div>
-          <p className="mt-4 text-gray-700">{elem.comment}</p>
-          <div className="flex justify-between items-center mt-4">
-            <ProductRating rating={elem.rating} />
-            <p className="text-gray-500 text-sm">{elem.date}</p>
-          </div>
+          ))}
         </div>
-      ))}
-    </div>
-  );
-};
-
-// Skeleton Loader Component
-const ProductSkeleton = () => {
-  return (
-    <div className="max-w-[95%] justify-center items-center flex flex-col mx-auto bg-white shadow-md rounded-md">
-      <div className="max-w-[95%] flex mx-auto bg-white shadow-md rounded-md">
-        <div className="w-[100%] h-[100%]">
-          <div className="w-[50%] h-[40rem] bg-gray-300 animate-pulse mt-4"></div>
-        </div>
-        <div className="flex flex-col justify-center items-center space-y-4">
-          <div className="w-[200px] h-[30px] bg-gray-300 animate-pulse"></div>
-          <div className="flex items-center space-x-2">
-            <div className="w-[100px] h-[20px] bg-gray-300 animate-pulse"></div>
-            <div className="w-[80px] h-[20px] bg-gray-300 animate-pulse"></div>
-          </div>
-          <div className="w-[75%] h-[40px] bg-gray-300 animate-pulse"></div>
-          <div className="w-[150px] h-[30px] bg-gray-300 animate-pulse"></div>
-          <div className="w-[100px] h-[30px] bg-gray-300 animate-pulse"></div>
-
-          <div className="mt-6 flex space-x-4">
-            <button className="w-[150px] py-5 text-2xl bg-blue-500 text-white rounded-md animate-pulse"></button>
-            <button className="w-[150px] py-5 text-2xl bg-green-500 text-white rounded-md animate-pulse"></button>
-          </div>
-        </div>
-      </div>
-
-      <h2 className="mx-auto text-3xl mt-9 bg-gray-300 animate-pulse w-[250px] h-[30px]"></h2>
-      <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-full mt-4">
-        <div className="flex items-center space-x-4">
-          <div className="bg-gray-300 animate-pulse w-12 h-12 rounded-full"></div>
-          <div>
-            <div className="w-[120px] h-[20px] bg-gray-300 animate-pulse"></div>
-            <div className="w-[150px] h-[15px] bg-gray-300 animate-pulse mt-1"></div>
-          </div>
-        </div>
-        <div className="w-[100%] h-[20px] bg-gray-300 animate-pulse mt-4"></div>
+      )}
+      <div>
+      <Recproduct startNumber={0} endNumber={9}/>
       </div>
     </div>
   );
+
 };
+
+
 
 export default ProductDetails;
