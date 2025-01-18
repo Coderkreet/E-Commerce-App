@@ -1,11 +1,14 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Cart = ({ cart }) => {
+const Cart = ({ cart ,seAmount }) => {
   // Convert price from dollars to rupees
+  const Navigate = useNavigate()
   const convertToRupees = (dollars) => {
     const conversionRate = 74.35; // 1 USD = 74.35 INR
     return dollars * conversionRate;
   };
+
 
   // Calculate total price with validation checks, assuming all items have quantity 1
   const totalPrice = cart.reduce((total, item) => {
@@ -15,6 +18,7 @@ const Cart = ({ cart }) => {
     return total + priceInRupees; // No need to multiply by quantity, assuming all items have quantity 1
   }, 0);
 
+  seAmount(totalPrice.toFixed(2))
   return (
     <div className="max-w-[91%] mx-auto p-6 bg-white shadow-md rounded-md">
       <h2 className="text-2xl font-bold text-center mb-6">Shopping Cart</h2>
@@ -51,7 +55,9 @@ const Cart = ({ cart }) => {
 
           {/* Checkout Button */}
           <div className="mt-6 flex justify-center">
-            <button className="bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600">
+            <button onClick={()=>{
+              Navigate("/Checkout")
+            }} className="bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600">
               Checkout
             </button>
           </div>

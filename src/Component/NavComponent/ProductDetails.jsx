@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import ProductRating from "../ProductRating"; // Make sure the path is correct
 import Recproduct from "../Recproduct";
+import { toast } from "react-toastify";
 
-const ProductDetails = ({ setCart, cart }) => {
+const ProductDetails = ({ setCart, cart,IsLogin,seAmount }) => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const Navigation = useNavigate();
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -22,21 +24,22 @@ const ProductDetails = ({ setCart, cart }) => {
         setLoading(false);
       }
     };
-
     fetchProductDetails();
   }, [id]);
+
+ 
 
   const handleAddToCart = () => {
     if (product) { // Check if product is loaded
       setCart([...cart, product]);
-      alert(`${product.title} added to cart!`);
+     
+     toast.success(`${product.title} added to cart!`,{position:"top-center"});
     }
   };
 
   const handleBuyNow = () => {
-    if (product) { // Check if product is loaded
-      alert(`Proceeding to checkout with ${product.title}`);
-    }
+    seAmount(Math.round(product.price * 74.35))
+    Navigation('/Checkout')
   };
 
   if (error) return <div className="text-red-500 p-4">Error: {error}</div>;
@@ -67,13 +70,22 @@ const ProductDetails = ({ setCart, cart }) => {
           <p className="text-gray-600 mb-4">Stock: {product.stock}</p>
           <div className="flex space-x-4">
             <button
-              onClick={handleAddToCart}
+              onClick={()=>{
+                IsLogin?
+                handleAddToCart :
+                toast.error("First You Need to Login")
+                Navigation('/Login')
+              }}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
               Add to Cart
             </button>
             <button
-              onClick={handleBuyNow}
+              onClick={ 
+
+                IsLogin?handleBuyNow:toast.error("First You Need to Login")
+               
+              }
               className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
             >
               Buy Now

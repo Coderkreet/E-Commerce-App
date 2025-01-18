@@ -3,13 +3,15 @@ import { AiOutlineSearch, AiOutlineShoppingCart, AiOutlineHeart } from "react-ic
 import { BiLogIn } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
-const NavBar = ({ IsLogin }) => {
+const NavBar = ({ IsLogin ,cart }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const searchRef = useRef(null);
+
 
   // Fetch products from APIs
   useEffect(() => {
@@ -109,9 +111,8 @@ const NavBar = ({ IsLogin }) => {
           <div className="flex gap-x-2 items-center">
             {IsLogin ? (
               <div className="flex gap-x-2 items-center">
-                <AiOutlineHeart className="font-bold text-[1.4rem] cursor-pointer" />
 
-               <Link to={'/cart'}> <AiOutlineShoppingCart className="font-bold text-[1.4rem] cursor-pointer" /></Link>
+               <Link className="flex gap-x-1 " to={'/cart'}> <AiOutlineShoppingCart className="font-bold text-[1.4rem] cursor-pointer" />{cart&&<span className="text-red-500 font-extrabold">{cart.length}</span>}</Link>
               </div>
             ) : (
               <div className="flex justify-center items-center gap-4 text-black">

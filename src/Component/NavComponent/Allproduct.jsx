@@ -24,10 +24,6 @@ const Card = () => {
     );
   }
 
-  
-    window.scrollTo(0, 0);
-
-
   // Show error message if API fails
   if (error || error2) {
     return <div className="text-red-500 text-xl">⚠️ Error loading products. Please try again later.</div>;
@@ -52,8 +48,6 @@ const Card = () => {
 
               {/* Favorite & View Icons */}
               <div className="absolute right-2 top-2 flex flex-col text-xl">
-                <AiOutlineHeart className="bg-white rounded-full mb-2 cursor-pointer hover:text-red-500 transform transition-transform hover:scale-110" />
-                <AiOutlineEye className="bg-white rounded-full cursor-pointer hover:text-blue-500 transform transition-transform hover:scale-110" />
               </div>
 
               {/* Product Image with Zoom effect */}
@@ -89,8 +83,6 @@ const Card = () => {
             >
               {/* Favorite & View Icons */}
               <div className="absolute right-2 top-2 flex flex-col text-xl">
-                <AiOutlineHeart className="bg-white rounded-full mb-2 cursor-pointer hover:text-red-500 transform transition-transform hover:scale-110" />
-                <AiOutlineEye className="bg-white rounded-full cursor-pointer hover:text-blue-500 transform transition-transform hover:scale-110" />
               </div>
 
               {/* Product Image with Zoom effect */}
