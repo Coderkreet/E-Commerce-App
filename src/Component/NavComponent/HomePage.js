@@ -1,6 +1,9 @@
-import React, { useEffect ,useState } from 'react'
-import {IoIosArrowForward} from 'react-icons/io'
-import {AiFillApple, AiOutlineEye, AiOutlineHeart} from 'react-icons/ai'
+import React, { useEffect, useState, useRef } from 'react'
+import { IoIosArrowForward, IoIosArrowBack } from 'react-icons/io'
+import { AiFillApple, AiOutlineEye, AiOutlineHeart, AiOutlineShoppingCart } from 'react-icons/ai'
+import { HiOutlineMenu, HiOutlineSearch, HiOutlineUser } from 'react-icons/hi'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Glide from "@glidejs/glide"
 import iphone14 from '../Image/HeroSectionimg/hero_endframe__cvklg0xk3w6e_large 2 (1).png'
 import JbLBox from '../Image/HeroSectionimg/JBL_BOOMBOX_2_HERO_020_x1 (1) 1.png'
@@ -9,374 +12,421 @@ import perfumeImg from '../Image/HeroSectionimg/perfumeImg.png'
 import Recproduct from '../Recproduct'
 import { Link } from 'react-router-dom'
 
-
-
-
-
+gsap.registerPlugin(ScrollTrigger)
 
 const HomePage = () => {
-
-
+  const [countdown, setCountdown] = useState(3 * 24 * 60 * 60 * 1000)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [currentSlide, setCurrentSlide] = useState(0)
   
-  const [countdown, setCountdown] = useState(3 * 24 * 60 * 60 * 1000); // 3 days in milliseconds
+  const heroRef = useRef()
+  const categoriesRef = useRef()
+  const flashSaleRef = useRef()
+  const bestSellingRef = useRef()
+  const promoRef = useRef()
+  const exploreRef = useRef()
+
+  const categories = [
+    "Woman's Fashion", "Men's Fashion", "Electronics", "Home & Lifestyle",
+    "Medicine", "Sports & Outdoor", "Baby's & Toys", "Groceries & Pets", "Health & Beauty"
+  ]
+
+  const slides = [
+    {
+      bg: "bg-gradient-to-br from-gray-900 via-black to-gray-800",
+      content: (
+        <>
+          <div className='flex flex-col gap-4 z-10 relative'>
+            <div className='flex items-center gap-3 lg:gap-6'>
+              <AiFillApple className='text-3xl lg:text-6xl text-white'/>
+              <p className='text-sm lg:text-xl text-gray-300'>iPhone 14 Series</p>
+            </div>
+            <h1 className='text-2xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight'>
+              Up to 10%<br/>
+              <span className='text-blue-400'>off Voucher</span>
+            </h1>
+            <button className='group flex items-center gap-2 text-white hover:text-blue-400 transition-all duration-300 w-fit'>
+              <span className='text-lg lg:text-xl border-b-2 border-transparent group-hover:border-blue-400 transition-all duration-300'>Shop Now</span>
+              <IoIosArrowForward className='transform group-hover:translate-x-1 transition-transform duration-300'/>
+            </button>
+          </div>
+          <div className='relative z-10'>
+            <img className='w-48 lg:w-80 xl:w-96 object-contain drop-shadow-2xl' src={iphone14} alt="iPhone 14"/>
+            <div className='absolute inset-0 bg-gradient-to-tr from-blue-500/20 to-purple-500/20 blur-3xl -z-10'></div>
+          </div>
+        </>
+      )
+    },
+    {
+      bg: "bg-gradient-to-br from-green-900 via-emerald-800 to-teal-900",
+      content: (
+        <>
+          <div className='flex flex-col gap-4 z-10 relative'>
+            <h1 className='text-2xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight'>
+              Enhance Your<br/>
+              <span className='text-emerald-400'>Music Experience</span>
+            </h1>
+            <div className='flex gap-2 lg:gap-4'>
+              {[
+                { value: "23", label: "Hours" },
+                { value: "07", label: "Days" },
+                { value: "59", label: "Min" },
+                { value: "35", label: "Sec" }
+              ].map((time, idx) => (
+                <div key={idx} className='w-12 h-12 lg:w-16 lg:h-16 rounded-full bg-white/90 backdrop-blur-sm text-black flex flex-col justify-center items-center shadow-lg'>
+                  <p className='text-sm lg:text-lg font-bold'>{time.value}</p>
+                  <p className='text-xs text-gray-600'>{time.label}</p>
+                </div>
+              ))}
+            </div>
+            <button className='bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg w-fit'>
+              Buy Now!
+            </button>
+          </div>
+          <div className='relative z-10'>
+            <img className='w-48 lg:w-80 xl:w-96 object-contain drop-shadow-2xl' src={JbLBox} alt="JBL Speaker"/>
+            <div className='absolute inset-0 bg-gradient-to-tr from-emerald-500/20 to-teal-500/20 blur-3xl -z-10'></div>
+          </div>
+        </>
+      )
+    },
+    {
+      bg: "bg-gradient-to-br from-purple-900 via-pink-800 to-rose-900",
+      content: (
+        <>
+          <div className='flex flex-col gap-4 z-10 relative'>
+            <h1 className='text-2xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight'>
+              Women's<br/>
+              <span className='text-pink-400'>Collections</span>
+            </h1>
+            <p className='text-base lg:text-xl text-gray-300 max-w-md'>
+              Featured collections that give you another vibe.
+            </p>
+            <button className='group flex items-center gap-2 text-white hover:text-pink-400 transition-all duration-300 w-fit'>
+              <span className='text-lg border-b-2 border-transparent group-hover:border-pink-400 transition-all duration-300'>Shop Now</span>
+              <IoIosArrowForward className='transform group-hover:translate-x-1 transition-transform duration-300'/>
+            </button>
+          </div>
+          <div className='relative z-10'>
+            <img className='w-48 lg:w-80 xl:w-96 object-contain drop-shadow-2xl' src={womanPic} alt="Women Collection"/>
+            <div className='absolute inset-0 bg-gradient-to-tr from-pink-500/20 to-purple-500/20 blur-3xl -z-10'></div>
+          </div>
+        </>
+      )
+    },
+    {
+      bg: "bg-gradient-to-br from-amber-900 via-orange-800 to-red-900",
+      content: (
+        <>
+          <div className='flex flex-col gap-4 z-10 relative'>
+            <h1 className='text-2xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight'>
+              Luxury<br/>
+              <span className='text-amber-400'>Perfume</span>
+            </h1>
+            <p className='text-base lg:text-xl text-gray-300'>
+              GUCCI INTENSE OUD EDP
+            </p>
+            <button className='group flex items-center gap-2 text-white hover:text-amber-400 transition-all duration-300 w-fit'>
+              <span className='text-lg border-b-2 border-transparent group-hover:border-amber-400 transition-all duration-300'>Shop Now</span>
+              <IoIosArrowForward className='transform group-hover:translate-x-1 transition-transform duration-300'/>
+            </button>
+          </div>
+          <div className='relative z-10'>
+            <img className='w-48 lg:w-80 xl:w-96 object-contain drop-shadow-2xl' src={perfumeImg} alt="Perfume"/>
+            <div className='absolute inset-0 bg-gradient-to-tr from-amber-500/20 to-orange-500/20 blur-3xl -z-10'></div>
+          </div>
+        </>
+      )
+    }
+  ]
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCountdown(prevCountdown => prevCountdown - 1000); // Subtract 1 second from the countdown every second
-    }, 1000);
+      setCountdown(prevCountdown => prevCountdown - 1000)
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [])
 
-    return () => clearInterval(interval); // Clean up the interval when the component unmounts
-  }, []);
+  useEffect(() => {
+    // Hero animations
+    gsap.fromTo(heroRef.current, 
+      { opacity: 0, y: 50 },
+      { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
+    )
 
-  const formatTime = time => {
-    return time < 10 ? `0${time}` : time;
-  };
-  const days = Math.floor(countdown / (24 * 60 * 60 * 1000));
-  const hours = Math.floor((countdown % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
-  const minutes = Math.floor((countdown % (60 * 60 * 1000)) / (60 * 1000));
-  const seconds = Math.floor((countdown % (60 * 1000)) / 1000);
+    // Categories animation
+    gsap.fromTo(categoriesRef.current?.children, 
+      { opacity: 0, x: -30 },
+      { opacity: 1, x: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" }
+    )
 
-  
-    useEffect(() => {
-        const slider = new Glide(".glide-02", {
-          type: "slider",
-          focusAt: "center",
-          perView: 1,
-          autoplay: 2000,
-          animationDuration: 700,
-          gap: 0,
-          classes: {
-            nav: {
-              active: "[&>*]:bg-wuiSlate-700",
-            },
-          },
-        }).mount()
-    
-        return () => {
-          slider.destroy()
-        }
-      }, [])
+    // Scroll triggered animations
+    const sections = [flashSaleRef, bestSellingRef, promoRef, exploreRef]
+    sections.forEach((ref, index) => {
+      if (ref.current) {
+        gsap.fromTo(ref.current,
+          { opacity: 0, y: 60 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: ref.current,
+              start: "top 80%",
+              end: "bottom 20%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        )
+      }
+    })
 
-      
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+    }
+  }, [])
+
+  useEffect(() => {
+    const slider = new Glide(".glide-02", {
+      type: "carousel",
+      focusAt: "center",
+      perView: 1,
+      autoplay: 4000,
+      animationDuration: 800,
+      gap: 0,
+      classes: {
+        nav: {
+          active: "[&>*]:bg-white",
+        },
+      },
+    })
+
+    slider.on('run', () => {
+      setCurrentSlide(slider.index)
+    })
+
+    slider.mount()
+    return () => slider.destroy()
+  }, [])
+
+  const formatTime = time => time < 10 ? `0${time}` : time
+  const days = Math.floor(countdown / (24 * 60 * 60 * 1000))
+  const hours = Math.floor((countdown % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000))
+  const minutes = Math.floor((countdown % (60 * 60 * 1000)) / (60 * 1000))
+  const seconds = Math.floor((countdown % (60 * 1000)) / 1000)
 
   return (
-    <div className='flex flex-col w-[80rem] mx-auto'>
-
-     <div className='flex justify-center items-center mt-10 gap-x-10'>
-      <div className='w-[13rem] h-[21rem] flex flex-col gap-4 '>
-        <div className='flex items-center cursor-pointer hover:font-bold gap-x-9'><p>Woman’s Fashion</p> <IoIosArrowForward/> </div>
-        <div className='flex items-center cursor-pointer hover:font-bold gap-x-14'><p>Men’s Fashion</p> <IoIosArrowForward/> </div>
-        <p className='overflow-y-hidden hover:font-bold cursor-pointer'>Electronics</p>
-        <p className='overflow-y-hidden hover:font-bold cursor-pointer'>Home & Lifestyle</p>
-        <p className='overflow-y-hidden hover:font-bold cursor-pointer'>Medicine</p>
-        <p className='overflow-y-hidden hover:font-bold cursor-pointer'>Baby’s & Toys</p>
-        <p className='overflow-y-hidden hover:font-bold cursor-pointer'>Sports & Outdoor</p>
-        <p className='overflow-y-hidden hover:font-bold cursor-pointer'>Groceries & Pets</p>
-        <p className='overflow-y-hidden hover:font-bold cursor-pointer'>Health & Beauty</p>
-
-      </div>
-
-      <div className="relative w-[55rem] h-[22rem] rounded-lg glide-02 overflow-y-hidden">
-        {/*    <!-- Slides --> */}
-        <div className="overflow-hidden" data-glide-el="track">
-          <ul className="whitespace-no-wrap flex-no-wrap [backface-visibility: hidden] [transform-style: preserve-3d] [touch-action: pan-Y] [will-change: transform] relative flex w-full overflow-hidden p-0">
-            <li>
-                <div className='bg-black flex justify-center items-center w-[55rem] h-[22rem]  text-white p-4'>
-                    <div className='flex flex-col gap-5 mt-5 px-6'>
-                        <div className='flex items-center gap-10'>
-                            <AiFillApple className='text-[4rem]'/>
-                            <p>iPhone 14 Series</p>
-                        </div>
-                    <h1 className='text-[3rem] font-bold'>Up to 10% off Voucher</h1>
-                    <div className='items-center flex gap-3'>
-                        <p className='text-[1.5rem] border-b-2'>Shop Now</p>
-                        <IoIosArrowForward/>
-                    </div>
-                    </div>
-                    <img className='mt-5' src={iphone14} alt=""/>
-                    
-                </div>
-           
-            </li>
-            {/* 2 */}
-            <li>
-                <div className='bg-black flex justify-center items-center w-[55rem] h-[22rem]  text-white p-4'>
-                    <div className='flex flex-col gap-5 mt-5 px-6'>
-                      
-                    <h1 className='text-[3rem] font-bold'>Enhance Your Music Experience</h1>
-                    <div className='items-center flex gap-3'>
-                      <div className='w-[4rem] h-[4rem] rounded-full bg-white text-black flex justify-center items-center flex-col' >
-                        <p className='text-[1rem] font-extrabold'>23</p>
-                        <p className='text-[0.7rem] '>Hours</p>
-                      </div>
-                      <div className='w-[4rem] h-[4rem] rounded-full bg-white text-black flex justify-center items-center flex-col' >
-                        <p className='text-[1rem] font-extrabold'>07</p>
-                        <p className='text-[0.7rem] '>Day</p>
-                      </div>
-                      <div className='w-[4rem] h-[4rem] rounded-full bg-white text-black flex justify-center items-center flex-col' >
-                        <p className='text-[1rem] font-extrabold'>59</p>
-                        <p className='text-[0.7rem] '>Minutes</p>
-                      </div>
-                      <div className='w-[4rem] h-[4rem] rounded-full bg-white text-black flex justify-center items-center flex-col' >
-                        <p className='text-[1rem] font-extrabold'>23</p>
-                        <p className='text-[0.7rem] '>Secounds</p>
-                      </div>
-                    </div>
-                    <div className=''>
-                        
-                    <button className=' w-[8rem] rounded-lg h-[3rem] bg-green-400 ' type="button"> Buy Now!</button>
-                    </div>
-                    </div>
-                    <img className='mt-5' src={JbLBox} alt=""/>
-                    
-                </div>
-           
-            </li>
-            {/* 3 */}
-            <li>
-                <div className='bg-[#000000] flex justify-center items-center w-[55rem] h-[22rem]  text-white p-4'>
-                    <div className='flex flex-col gap-5 mt-5 px-6'>
-                      
-                    <h1 className='text-[3rem] font-bold'>Women’s Collections</h1>
-                    <p className='text-[2rem]'>Featured woman collections that give you another vibe.</p>
-            
-                    <div className='items-center flex gap-3'>
-                        <p className='text-[1.5rem] border-b-2'>Shop Now</p>
-                        <IoIosArrowForward/>
-                    </div>
-                    </div>
-                    <img className='mt-5' src={womanPic} alt=""/>
-                    
-                </div>
-           
-            </li>
-          {/* 4 */}
-          <li>
-                <div className='bg-[#000000] flex justify-center items-center w-[55rem] h-[22rem] gap-10 text-white p-4'>
-                    <div className='flex flex-col gap-5 mt-5 px-6'>
-                      
-                    <h1 className='text-[3rem] font-bold'>Perfume</h1>
-                    <p className='text-[1.5rem]'>GUCCI INTENSE OUD EDP.</p>
-            
-                    <div className='items-center flex gap-3'>
-                        <p className='text-[1.5rem] border-b-2'>Shop Now</p>
-                        <IoIosArrowForward/>
-                    </div>
-                    </div>
-                    <div className='overflow-hidden'>
-                        
-                    <img className='mt-5 ' width={"300px"} src={perfumeImg} alt=""/>
-                    </div>
-                    
-                </div>
-           
-            </li>
-         
-          </ul>
-        </div>
-        {/*    <!-- Indicators --> */}
-        <div
-          className="absolute bottom-0 flex items-center justify-center w-full gap-2"
-          data-glide-el="controls[nav]"
+    <div className='min-h-screen bg-gray-50'>
+      {/* Mobile Navigation Header */}
+      <div className='lg:hidden sticky top-0 z-50 bg-white shadow-sm px-4 py-3 flex items-center justify-between'>
+        <button 
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className='p-2 hover:bg-gray-100 rounded-lg transition-colors'
         >
-          <button
-            className="p-4 group"
-            data-glide-dir="=0"
-            aria-label="goto slide 1"
-          >
-            <span className="block w-2 h-2 transition-colors duration-300 rounded-full bg-white/20 ring-1 ring-slate-700 focus:outline-none"></span>
+          <HiOutlineMenu className='text-xl'/>
+        </button>
+        <h1 className='font-bold text-xl'>ShopLux</h1>
+        <div className='flex gap-2'>
+          <button className='p-2 hover:bg-gray-100 rounded-lg transition-colors'>
+            <HiOutlineSearch className='text-xl'/>
           </button>
-          <button
-            className="p-4 group"
-            data-glide-dir="=1"
-            aria-label="goto slide 2"
-          >
-            <span className="block w-2 h-2 transition-colors duration-300 rounded-full bg-white/20 ring-1 ring-slate-700 focus:outline-none"></span>
-          </button>
-          <button
-            className="p-4 group"
-            data-glide-dir="=2"
-            aria-label="goto slide 3"
-          >
-            <span className="block w-2 h-2 transition-colors duration-300 rounded-full bg-white/20 ring-1 ring-slate-700 focus:outline-none"></span>
-          </button>
-          <button
-            className="p-4 group"
-            data-glide-dir="=3"
-            aria-label="goto slide 4"
-          >
-            <span className="block w-2 h-2 transition-colors duration-300 rounded-full bg-white/20 ring-1 ring-slate-700 focus:outline-none"></span>
+          <button className='p-2 hover:bg-gray-100 rounded-lg transition-colors relative'>
+            <AiOutlineShoppingCart className='text-xl'/>
+            <span className='absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center'>3</span>
           </button>
         </div>
       </div>
-      </div>
 
-
-
-
-    <div className='mt-[6rem] justify-start flex gap-10 items-center mb-[3rem] font-bold mr-[3rem]'>
-
-<div className='flex gap-[3rem]'> 
-<div className='flex flex-col gap-y-3'>
-<div className='flex gap-x-3 items-center'>
-<div className='w-[1.25rem] rounded-lg bg-[#DB4444] h-[2.5rem]'>
-</div>
-<p className='text-[#DB4444] font-bold'>Today’s</p>
-</div>
-<h1 className='text-[2rem] font-extrabold'>Flash Sales</h1>
-</div>
-</div>
-
-
-<div className='flex gap-x-6'>
-  <div>
-    <p className='text-[0.7rem]'>Day</p>
-    <div className='flex gap-x-4'>
-    <h1 className='text-2xl font-bold'>03</h1>
-    <div className='text-red-600 text-2xl'>
-    :
-  </div>
-    </div>
-
-  </div>
-
-  <div>
-    <p className='text-[0.7rem]'>Hours</p>
-    <div className='flex gap-x-4'>
-    <h1 className='text-2xl font-bold'>{formatTime(hours)}</h1>
-    <div className='text-red-600 text-2xl'>
-    :
-  </div>
-    </div>
-  </div>
-
-  <div>
-    <p className='text-[0.7rem]'>Minutes</p>
-    <div className='flex gap-x-4'>
-    <h1 className='text-2xl font-bold'>{formatTime(minutes)}</h1>
-    <div className='text-red-600 text-2xl'>
-    :
-  </div>
-    </div>
-  </div>
-
-  <div>
-    <p className='text-[0.7rem]'>Secounds</p>
-    <h1 className='text-2xl font-bold'>{formatTime(seconds)}</h1>
-  </div>
-</div>
-</div>
-    <div className='flex flex-col justify-center items-center gap-y-[3.5rem]'>
-{/* product */}
-    <div className='flex gap-x-6'>
-  
-  <Recproduct startNumber={0} endNumber={4}/>
-
-    </div>
-
-   <Link to={'/products'}> <button type="button" className='bg-[#DB4444] w-[15rem] h-[3rem] text-white font-bold rounded-md '>View All Products</button>
-   </Link>
-
-    </div>
-
-
-<div className='mt-[6rem] justify-between flex gap-10 items-center mb-[3rem] font-bold mr-[3rem]'>
-
-<div className='flex gap-[3rem]'> 
-<div className='flex flex-col gap-y-3'>
-<div className='flex gap-x-3 items-center'>
-<div className='w-[1.25rem] rounded-lg bg-[#DB4444] h-[2.5rem]'>
-</div>
-<p className='text-[#DB4444] font-bold'>This Month</p>
-</div>
-<h1 className='text-[2rem] font-extrabold'>Best Selling Products</h1>
-</div>
-</div>
-
-<div className='flex justify-end'>
-<button type="button" className='bg-[#DB4444] w-[8rem] h-[3rem] text-white font-bold rounded-md '>View All</button>
-</div>
-
-
-
-
-</div>
-
-<div className='flex flex-col justify-center items-center gap-y-[3.5rem]'>
-{/* product */}
-    <div className='flex gap-x-6'>
-     {/* 5 card component reflect */}
-
-    </div>
-
-
-    </div>
-
-  
-
-
-    <div className='bg-black flex justify-center items-center w-[60rem] h-[29rem] mx-auto mt-[5rem] text-white p-4'>
-                    <div className='flex flex-col gap-5 mt-5 px-6'>
-                      <h1 className='text-green-400 font-bold'>Categories</h1>
-                    <h1 className='text-[2.5rem] font-bold'>Enhance Your Music Experience</h1>
-                    <div className='items-center flex gap-3'>
-                      <div className='w-[4rem] h-[4rem] rounded-full bg-white text-black flex justify-center items-center flex-col' >
-                        <p className='text-[1rem] font-extrabold'>{formatTime(days)}</p>
-                        <p className='text-[0.7rem] '>Day</p>
-                      </div>
-                      <div className='w-[4rem] h-[4rem] rounded-full bg-white text-black flex justify-center items-center flex-col' >
-                        <p className='text-[1rem] font-extrabold'>{formatTime(hours)}</p>
-                        <p className='text-[0.7rem] '>Hours</p>
-                      </div>
-                      <div className='w-[4rem] h-[4rem] rounded-full bg-white text-black flex justify-center items-center flex-col' >
-                        <p className='text-[1rem] font-extrabold'>{formatTime(minutes)}</p>
-                        <p className='text-[0.7rem] '>Minutes</p>
-                      </div>
-                      <div className='w-[4rem] h-[4rem] rounded-full bg-white text-black flex justify-center items-center flex-col' >
-                        <p className='text-[1rem] font-extrabold'>{formatTime(seconds)}</p>
-                        <p className='text-[0.7rem] '>Secounds</p>
-                      </div>
-                    </div>
-                    <div className=''>
-                        
-                    <button className=' w-[8rem] rounded-lg h-[3rem] bg-green-400 ' type="button"> Buy Now!</button>
-                    </div>
-                    </div>
-                    <img className='mt-5' src={JbLBox} alt=""/>
-                    
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div className='lg:hidden fixed inset-0 z-50 bg-black bg-opacity-50' onClick={() => setIsMobileMenuOpen(false)}>
+          <div className='w-80 h-full bg-white shadow-xl transform transition-transform'>
+            <div className='p-4 border-b'>
+              <h2 className='text-xl font-bold'>Categories</h2>
+            </div>
+            <div ref={categoriesRef} className='p-4 space-y-4'>
+              {categories.map((category, index) => (
+                <div key={index} className='flex items-center justify-between cursor-pointer hover:bg-gray-50 p-3 rounded-lg transition-colors group'>
+                  <span className='group-hover:text-blue-600 transition-colors'>{category}</span>
+                  <IoIosArrowForward className='text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all'/>
                 </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
- 
+      <div className='max-w-7xl mx-auto px-4 lg:px-6'>
+        {/* Desktop Layout */}
+        <div ref={heroRef} className='flex flex-col lg:flex-row justify-center items-start lg:items-center mt-6 lg:mt-10 gap-6 lg:gap-10'>
+          
+          {/* Desktop Categories Sidebar */}
+          <div className='hidden lg:block w-64 xl:w-80'>
+            <div ref={categoriesRef} className='bg-white rounded-2xl shadow-lg p-6 space-y-4'>
+              <h3 className='font-bold text-lg text-gray-800 mb-6'>Categories</h3>
+              {categories.map((category, index) => (
+                <div key={index} className='flex items-center justify-between cursor-pointer hover:bg-blue-50 p-3 rounded-xl transition-all duration-300 group'>
+                  <span className='text-gray-700 group-hover:text-blue-600 transition-colors font-medium'>{category}</span>
+                  <IoIosArrowForward className='text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all duration-300'/>
+                </div>
+              ))}
+            </div>
+          </div>
 
-     <div className='mt-[6rem] justify-start flex gap-10 items-center mb-[3rem] font-bold mr-[3rem]'>
+          {/* Hero Slider */}
+          <div className="relative w-full lg:flex-1 max-w-4xl rounded-2xl lg:rounded-3xl overflow-hidden shadow-2xl glide-02">
+            <div className="overflow-hidden" data-glide-el="track">
+              <ul className="flex">
+                {slides.map((slide, index) => (
+                  <li key={index}>
+                    <div className={`${slide.bg} flex flex-col lg:flex-row justify-between items-center w-full h-64 sm:h-80 lg:h-96 text-white p-6 lg:p-8 relative overflow-hidden`}>
+                      <div className='absolute inset-0 bg-gradient-to-r from-black/20 to-transparent'></div>
+                      {slide.content}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            {/* Custom Navigation */}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2" data-glide-el="controls[nav]">
+              {slides.map((_, index) => (
+                <button
+                  key={index}
+                  className={`w-2 h-2 lg:w-3 lg:h-3 rounded-full transition-all duration-300 ${
+                    currentSlide === index ? 'bg-white scale-125' : 'bg-white/40 hover:bg-white/60'
+                  }`}
+                  data-glide-dir={`=${index}`}
+                  aria-label={`goto slide ${index + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
 
-<div className='flex gap-[3rem]'> 
-<div className='flex flex-col gap-y-3'>
-<div className='flex gap-x-3 items-center'>
-<div className='w-[1.25rem] rounded-lg bg-[#DB4444] h-[2.5rem]'>
-</div>
-<p className='text-[#DB4444] font-bold'>Our Products</p>
-</div>
-<h1 className='text-[2rem] font-extrabold'>Explore Our Products</h1>
-</div>
-</div>
+        {/* Flash Sales Section */}
+        <section ref={flashSaleRef} className='mt-16 lg:mt-24'>
+          <div className='flex flex-col lg:flex-row lg:items-end justify-between gap-6 lg:gap-10 mb-8'>
+            <div className='space-y-4'>
+              <div className='flex items-center gap-3'>
+                <div className='w-4 h-8 lg:w-5 lg:h-10 rounded-lg bg-gradient-to-b from-red-500 to-red-600'></div>
+                <p className='text-red-500 font-bold text-sm lg:text-base'>Today's</p>
+              </div>
+              <h2 className='text-2xl lg:text-4xl xl:text-5xl font-bold text-gray-800'>Flash Sales</h2>
+            </div>
 
-</div>
+            {/* Countdown Timer */}
+            <div className='flex gap-3 lg:gap-6'>
+              {[
+                { value: formatTime(days), label: "Days" },
+                { value: formatTime(hours), label: "Hours" },
+                { value: formatTime(minutes), label: "Minutes" },
+                { value: formatTime(seconds), label: "Seconds" }
+              ].map((time, index) => (
+                <div key={index} className='text-center'>
+                  <p className='text-xs lg:text-sm text-gray-500 mb-1'>{time.label}</p>
+                  <div className='flex items-center gap-2'>
+                    <div className='bg-white rounded-xl shadow-lg px-3 py-2 lg:px-4 lg:py-3'>
+                      <span className='text-xl lg:text-3xl font-bold text-gray-800'>{time.value}</span>
+                    </div>
+                    {index < 3 && <span className='text-red-500 text-xl lg:text-2xl font-bold'>:</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
-<div className='flex flex-col justify-center items-center gap-y-[3.5rem]'>
-{/* product */}
-<Recproduct startNumber={5} endNumber={12}/>
-<Link to={'/products'}> <button type="button" className='bg-[#DB4444] w-[15rem] h-[3rem] text-white font-bold rounded-md '>View All Products</button>
-</Link>
+          <div className='bg-white rounded-2xl lg:rounded-3xl shadow-lg p-6 lg:p-8 mb-8'>
+            <Recproduct startNumber={0} endNumber={4}/>
+          </div>
+          
+          <div className='text-center'>
+            <Link to={'/products'}>
+              <button className='bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-8 lg:px-12 py-3 lg:py-4 rounded-full font-bold text-sm lg:text-base transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl'>
+                View All Products
+              </button>
+            </Link>
+          </div>
+        </section>
 
-    </div>
+        {/* Best Selling Section */}
+        <section ref={bestSellingRef} className='mt-16 lg:mt-24'>
+          <div className='flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8'>
+            <div className='space-y-4'>
+              <div className='flex items-center gap-3'>
+                <div className='w-4 h-8 lg:w-5 lg:h-10 rounded-lg bg-gradient-to-b from-red-500 to-red-600'></div>
+                <p className='text-red-500 font-bold text-sm lg:text-base'>This Month</p>
+              </div>
+              <h2 className='text-2xl lg:text-4xl xl:text-5xl font-bold text-gray-800'>Best Selling Products</h2>
+            </div>
+            <button className='bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 lg:px-8 py-3 rounded-full font-bold text-sm lg:text-base transition-all duration-300 transform hover:scale-105 shadow-lg'>
+              View All
+            </button>
+          </div>
+          <div className='bg-white rounded-2xl lg:rounded-3xl shadow-lg p-6 lg:p-8'>
+            {/* Best selling products will go here */}
+          </div>
+        </section>
 
-{/* end */}
+        {/* Promotional Banner */}
+        <section ref={promoRef} className='mt-16 lg:mt-24'>
+          <div className='bg-gradient-to-br from-black via-gray-900 to-black rounded-2xl lg:rounded-3xl p-6 lg:p-12 flex flex-col lg:flex-row items-center gap-8 lg:gap-12 text-white relative overflow-hidden'>
+            <div className='absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-transparent to-emerald-500/10'></div>
+            <div className='flex flex-col gap-6 z-10 flex-1'>
+              <span className='text-emerald-400 font-bold text-sm lg:text-base'>Categories</span>
+              <h2 className='text-2xl lg:text-4xl xl:text-5xl font-bold leading-tight'>
+                Enhance Your Music Experience
+              </h2>
+              <div className='flex gap-3 lg:gap-4'>
+                {[
+                  { value: formatTime(days), label: "Days" },
+                  { value: formatTime(hours), label: "Hours" },
+                  { value: formatTime(minutes), label: "Minutes" },
+                  { value: formatTime(seconds), label: "Seconds" }
+                ].map((time, index) => (
+                  <div key={index} className='w-14 h-14 lg:w-20 lg:h-20 rounded-full bg-white/90 backdrop-blur-sm text-black flex flex-col justify-center items-center shadow-lg'>
+                    <p className='text-sm lg:text-lg font-bold'>{time.value}</p>
+                    <p className='text-xs text-gray-600'>{time.label}</p>
+                  </div>
+                ))}
+              </div>
+              <button className='bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white px-8 py-3 lg:py-4 rounded-full font-bold text-sm lg:text-base transition-all duration-300 transform hover:scale-105 shadow-lg w-fit'>
+                Buy Now!
+              </button>
+            </div>
+            <div className='relative z-10 flex-shrink-0'>
+              <img className='w-48 lg:w-80 xl:w-96 object-contain drop-shadow-2xl' src={JbLBox} alt="JBL Speaker"/>
+              <div className='absolute inset-0 bg-gradient-to-tr from-emerald-500/20 to-teal-500/20 blur-3xl -z-10'></div>
+            </div>
+          </div>
+        </section>
 
+        {/* Explore Products Section */}
+        <section ref={exploreRef} className='mt-16 lg:mt-24 pb-16 lg:pb-24'>
+          <div className='space-y-4 mb-8'>
+            <div className='flex items-center gap-3'>
+              <div className='w-4 h-8 lg:w-5 lg:h-10 rounded-lg bg-gradient-to-b from-red-500 to-red-600'></div>
+              <p className='text-red-500 font-bold text-sm lg:text-base'>Our Products</p>
+            </div>
+            <h2 className='text-2xl lg:text-4xl xl:text-5xl font-bold text-gray-800'>Explore Our Products</h2>
+          </div>
 
+          <div className='bg-white rounded-2xl lg:rounded-3xl shadow-lg p-6 lg:p-8 mb-8'>
+            <Recproduct startNumber={5} endNumber={12}/>
+          </div>
+          
+          <div className='text-center'>
+            <Link to={'/products'}>
+              <button className='bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-8 lg:px-12 py-3 lg:py-4 rounded-full font-bold text-sm lg:text-base transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl'>
+                View All Products
+              </button>
+            </Link>
+          </div>
+        </section>
+      </div>
     </div>
   )
 }
-
 
 export default HomePage

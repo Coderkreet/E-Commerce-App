@@ -1,416 +1,361 @@
-import React, { useEffect } from 'react'
-import {TbShoppingBag} from 'react-icons/tb'
-import {TbMoneybag} from 'react-icons/tb'
+import React, { useEffect, useRef } from 'react'
+import { TbShoppingBag, TbMoneybag } from 'react-icons/tb'
+import { CiTwitter } from 'react-icons/ci'
+import { BiLogoInstagram } from 'react-icons/bi'
+import { FiLinkedin } from 'react-icons/fi'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Glide from '@glidejs/glide'
 import portrait from "./Image/Signup/portrait-two-african-females-holding-shopping-bags-while-reacting-something-their-smartphone 1.png"
 import men1 from './Image/Aboutimg/men1.png'
 import Men2 from './Image/Aboutimg/Men2.png'
 import women3 from './Image/Aboutimg/women3.png'
-import { CiTwitter} from 'react-icons/ci'
-import {BiLogoInstagram} from 'react-icons/bi'
-import {FiLinkedin} from 'react-icons/fi'
-import Glide from '@glidejs/glide'
+
+gsap.registerPlugin(ScrollTrigger)
+
 const About = () => {
+  const heroRef = useRef()
+  const statsRef = useRef()
+  const teamRef = useRef()
+  const featuresRef = useRef()
+  const breadcrumbRef = useRef()
 
   useEffect(() => {
+    // Initialize Glide slider
     const slider = new Glide(".glide-02", {
-      type: "slider",
+      type: "carousel",
       focusAt: "center",
-      perView: 1,
-      autoplay: 2000,
-      animationDuration: 700,
-      gap: 0,
+      perView: 3,
+      autoplay: 3000,
+      animationDuration: 800,
+      gap: 30,
+      breakpoints: {
+        1024: { perView: 2 },
+        768: { perView: 1 }
+      },
       classes: {
         nav: {
-          active: "[&>*]:bg-wuiSlate-700",
+          active: "[&>*]:bg-blue-600",
         },
       },
     }).mount()
 
+    // GSAP Animations
+    const tl = gsap.timeline()
+
+    // Breadcrumb animation
+    gsap.fromTo(breadcrumbRef.current.children,
+      { opacity: 0, y: -20 },
+      { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" }
+    )
+
+    // Hero section animation
+    gsap.fromTo(heroRef.current.children,
+      { opacity: 0, y: 60 },
+      { 
+        opacity: 1, 
+        y: 0, 
+        duration: 0.8, 
+        stagger: 0.2, 
+        ease: "power3.out",
+        delay: 0.3
+      }
+    )
+
+    // Stats section scroll animation
+    gsap.fromTo(statsRef.current.children,
+      { opacity: 0, y: 50, scale: 0.9 },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: "back.out(1.7)",
+        scrollTrigger: {
+          trigger: statsRef.current,
+          start: "top 80%",
+          end: "bottom 20%",
+          toggleActions: "play none none reverse"
+        }
+      }
+    )
+
+    // Team section animation
+    gsap.fromTo(teamRef.current,
+      { opacity: 0, y: 60 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: teamRef.current,
+          start: "top 80%",
+          toggleActions: "play none none reverse"
+        }
+      }
+    )
+
+    // Features section animation
+    gsap.fromTo(featuresRef.current.children,
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        stagger: 0.15,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: featuresRef.current,
+          start: "top 80%",
+          toggleActions: "play none none reverse"
+        }
+      }
+    )
+
     return () => {
       slider.destroy()
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
     }
-  }, []);
+  }, [])
+
+  const statsData = [
+    {
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <g clipPath="url(#clip0_120_1380)">
+            <path d="M11.6666 31.6667C13.5076 31.6667 15 30.1743 15 28.3333C15 26.4924 13.5076 25 11.6666 25C9.8257 25 8.33331 26.4924 8.33331 28.3333C8.33331 30.1743 9.8257 31.6667 11.6666 31.6667Z" stroke="#FAFAFA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M28.3333 31.6667C30.1743 31.6667 31.6667 30.1743 31.6667 28.3333C31.6667 26.4924 30.1743 25 28.3333 25C26.4924 25 25 26.4924 25 28.3333C25 30.1743 26.4924 31.6667 28.3333 31.6667Z" stroke="#FAFAFA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M8.33331 28.3335H6.99998C5.89541 28.3335 4.99998 27.4381 4.99998 26.3335V21.6668M3.33331 8.3335H19.6666C20.7712 8.3335 21.6666 9.22893 21.6666 10.3335V28.3335M15 28.3335H25M31.6667 28.3335H33C34.1046 28.3335 35 27.4381 35 26.3335V18.3335M35 18.3335H21.6666M35 18.3335L30.5826 10.9712C30.2211 10.3688 29.5701 10.0002 28.8676 10.0002H21.6666" stroke="#FAFAFA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M5 11.8182H11.6667" stroke="#FAFAFA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M1.81818 15.4545H8.48484" stroke="#FAFAFA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M5 19.0909H11.6667" stroke="#FAFAFA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </g>
+        </svg>
+      ),
+      number: "10.5K",
+      description: "Sellers active on our site",
+      gradient: "from-blue-500 to-cyan-500"
+    },
+    {
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44" fill="none">
+          <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22 3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41Z" stroke="white" strokeWidth="2.75" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M27.6 16.0017C27.2377 15.3734 26.7113 14.8554 26.0772 14.5032C25.443 14.151 24.725 13.9779 24 14.0023H20C18.9391 14.0023 17.9217 14.4236 17.1716 15.1735C16.4214 15.9234 16 16.9406 16 18.0011C16 19.0617 16.4214 20.0788 17.1716 20.8288C17.9217 21.5787 18.9391 22 20 22H24C25.0609 22 26.0783 22.4213 26.8284 23.1712C27.5786 23.9212 28 24.9383 28 25.9989C28 27.0594 27.5786 28.0766 26.8284 28.8265C26.0783 29.5764 25.0609 29.9977 24 29.9977H20C19.275 30.0221 18.557 29.849 17.9228 29.4968C17.2887 29.1446 16.7623 28.6266 16.4 27.9983" stroke="white" strokeWidth="2.75" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M22 9V13.3333M22 30.6667V35" stroke="white" strokeWidth="2.75" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      ),
+      number: "33K",
+      description: "Monthly Product Sales",
+      gradient: "from-emerald-500 to-teal-500",
+      highlight: true
+    },
+    {
+      icon: <TbShoppingBag className='w-10 h-10 text-white' />,
+      number: "45.5K",
+      description: "Customers active on our site",
+      gradient: "from-purple-500 to-pink-500"
+    },
+    {
+      icon: <TbMoneybag className='w-10 h-10 text-white'/>,
+      number: "25K",
+      description: "Annual gross sales on our site",
+      gradient: "from-orange-500 to-red-500"
+    }
+  ]
+
+  const teamMembers = [
+    { image: women3, name: "Emma Watson", role: "Founder & Chairman" },
+    { image: men1, name: "Tom Cruise", role: "Managing Director" },
+    { image: Men2, name: "Will Smith", role: "Product Designer" }
+  ]
+
+  const features = [
+    {
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <g clipPath="url(#clip0_120_1380)">
+            <path d="M11.6666 31.6667C13.5076 31.6667 15 30.1743 15 28.3333C15 26.4924 13.5076 25 11.6666 25C9.8257 25 8.33331 26.4924 8.33331 28.3333C8.33331 30.1743 9.8257 31.6667 11.6666 31.6667Z" stroke="#FAFAFA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M8 28H6.66667C5.5621 28 4.66667 27.1046 4.66667 26V21.3333M3 8H19.3333C20.4379 8 21.3333 8.89543 21.3333 10V28M15 28H24.6667M32 28H32.6667C33.7712 28 34.6667 27.1046 34.6667 26V18M34.6667 18H21.3333M34.6667 18L30.2493 10.6377C29.8878 10.0353 29.2368 9.66667 28.5343 9.66667H21.3333" stroke="#FAFAFA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M5 11.8182H11.6667" stroke="#FAFAFA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </g>
+        </svg>
+      ),
+      title: "FREE AND FAST DELIVERY",
+      description: "Free delivery for all orders over $140"
+    },
+    {
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <g clipPath="url(#clip0_888_3534)">
+            <path d="M13.3337 25.0001C13.3337 23.1591 11.8413 21.6667 10.0003 21.6667C8.15938 21.6667 6.66699 23.1591 6.66699 25.0001V28.3334C6.66699 30.1744 8.15938 31.6667 10.0003 31.6667C11.8413 31.6667 13.3337 30.1744 13.3337 28.3334V25.0001Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M6.66699 25.0001V20.0001C6.66699 16.4639 8.07175 13.0725 10.5722 10.572C13.0727 8.07151 16.4641 6.66675 20.0003 6.66675C23.5365 6.66675 26.9279 8.07151 29.4284 10.572C31.9289 13.0725 33.3337 16.4639 33.3337 20.0001V25.0001" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </g>
+        </svg>
+      ),
+      title: "24/7 CUSTOMER SERVICE",
+      description: "Friendly 24/7 customer support"
+    },
+    {
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <path d="M17.4135 21.0536L17.7671 21.4071L18.1206 21.0536L24.4039 14.7703C24.692 14.4822 25.1754 14.4822 25.4635 14.7703C25.7516 15.0583 25.7516 15.5417 25.4635 15.8298L18.2968 22.9965C18.1455 23.1478 17.9583 23.2167 17.7671 23.2167C17.5758 23.2167 17.3886 23.1478 17.2373 22.9965L14.5539 20.3131C14.2659 20.0251 14.2659 19.5417 14.5539 19.2536C14.842 18.9655 15.3254 18.9655 15.6135 19.2536L17.4135 21.0536Z" fill="#FAFAFA" stroke="#FAFAFA"/>
+        </svg>
+      ),
+      title: "MONEY BACK GUARANTEE",
+      description: "We return money within 30 days"
+    }
+  ]
 
   return (
-    <div>
-          <div className='flex gap-x-3 mt-4 font-bold'>
-        <p>Home</p>
-        <div>/</div>
-        <p>About</p>
-      </div>
-    {/* 1 */}
-      <div className='flex justify-center items-center gap-20'>
-        <div className='flex flex-col gap-[2rem] w-[32rem] items-start'>
-               <h1 className='text-[3rem] font-bold'>Our Story</h1>
-        <p>Launced in 2015, Cartnevula is South Bharat online shopping makterplace with an active presense in India. Supported by wide range of tailored marketing, data and service solutions, Cartnevula has 10,500 sallers and 300 brands and serves 3 millioons customers across the region. </p>
-        <p>Cartnevula has more than 1 Million products to offer, growing at a very fast. Cartnevula offers a diverse assotment in categories ranging  from consumer.</p>
-
+    <div className='min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100'>
+      <div className='max-w-7xl mx-auto px-4 lg:px-6 py-8'>
+        
+        {/* Breadcrumb */}
+        <div ref={breadcrumbRef} className='flex items-center gap-3 mb-12 text-sm lg:text-base'>
+          <span className='text-gray-600 hover:text-blue-600 cursor-pointer transition-colors'>Home</span>
+          <span className='text-gray-400'>/</span>
+          <span className='text-blue-600 font-semibold'>About</span>
         </div>
-        <img className='w-[35rem] h-[31rem] rounded-lg border border-black' src={portrait} alt=""/>
+
+        {/* Hero Section */}
+        <section ref={heroRef} className='grid lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-20 lg:mb-32'>
+          <div className='space-y-6 lg:space-y-8'>
+            <h1 className='text-4xl lg:text-6xl xl:text-7xl font-bold text-gray-900 leading-tight'>
+              Our <span className='bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent'>Story</span>
+            </h1>
+            <div className='space-y-6 text-gray-600 text-base lg:text-lg leading-relaxed'>
+              <p className='opacity-90'>
+                Launched in 2015, <span className='font-semibold text-gray-800'>Cartnevula</span> is South Bharat's premier online shopping marketplace with an active presence in India. Supported by a wide range of tailored marketing, data and service solutions, Cartnevula has <span className='font-semibold text-blue-600'>10,500 sellers and 300 brands</span> and serves 3 million customers across the region.
+              </p>
+              <p className='opacity-90'>
+                Cartnevula has more than <span className='font-semibold text-purple-600'>1 Million products</span> to offer, growing at a very fast pace. Cartnevula offers a diverse assortment in categories ranging from consumer electronics to fashion.
+              </p>
+            </div>
+          </div>
+          
+          <div className='relative group'>
+            <div className='absolute inset-0 bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-500'></div>
+            <img 
+              className='relative w-full h-[400px] lg:h-[500px] object-cover rounded-3xl shadow-2xl border border-white/20 group-hover:scale-105 transition-transform duration-500' 
+              src={portrait} 
+              alt="Our Story"
+            />
+          </div>
+        </section>
+
+        {/* Stats Section */}
+        <section ref={statsRef} className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-20 lg:mb-32'>
+          {statsData.map((stat, index) => (
+            <div 
+              key={index}
+              className={`relative group cursor-pointer ${stat.highlight ? 'lg:scale-110 z-10' : ''}`}
+            >
+              <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} rounded-2xl blur-sm group-hover:blur-md transition-all duration-300 opacity-20 group-hover:opacity-30`}></div>
+              <div className={`relative p-8 rounded-2xl border border-gray-200 bg-white/90 backdrop-blur-sm hover:bg-white transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2 ${stat.highlight ? 'bg-gradient-to-br from-red-500 to-pink-600 text-white border-red-300' : ''}`}>
+                <div className='flex flex-col items-center text-center space-y-4'>
+                  <div className={`w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br ${stat.gradient} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                    <div className={`w-12 h-12 lg:w-14 lg:h-14 rounded-full flex items-center justify-center ${stat.highlight ? 'bg-white/20 backdrop-blur-sm' : 'bg-black'}`}>
+                      {stat.icon}
+                    </div>
+                  </div>
+                  <h3 className={`text-3xl lg:text-4xl font-bold ${stat.highlight ? 'text-white' : 'text-gray-900'}`}>
+                    {stat.number}
+                  </h3>
+                  <p className={`text-sm lg:text-base font-medium ${stat.highlight ? 'text-white/90' : 'text-gray-600'}`}>
+                    {stat.description}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </section>
+
+        {/* Team Section */}
+        <section ref={teamRef} className='mb-20 lg:mb-32'>
+          <div className='text-center mb-12 lg:mb-16'>
+            <h2 className='text-3xl lg:text-5xl font-bold text-gray-900 mb-4'>
+              Meet Our <span className='bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'>Team</span>
+            </h2>
+            <p className='text-gray-600 text-lg max-w-2xl mx-auto'>
+              The passionate individuals behind Cartnevula's success
+            </p>
+          </div>
+
+          <div className="relative glide-02">
+            <div className="overflow-hidden" data-glide-el="track">
+              <ul className="flex">
+                {[...Array(5)].map((_, slideIndex) => (
+                  <li key={slideIndex}>
+                    <div className='flex justify-center items-center gap-8 px-4'>
+                      {teamMembers.map((member, memberIndex) => (
+                        <div key={memberIndex} className='group text-center'>
+                          <div className='relative mb-6'>
+                            <div className='absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500'></div>
+                            <img 
+                              src={member.image} 
+                              className='relative w-48 lg:w-56 h-64 lg:h-80 object-cover rounded-2xl shadow-2xl group-hover:scale-105 transition-transform duration-500' 
+                              alt={member.name}
+                            />
+                          </div>
+                          <h3 className='text-xl lg:text-2xl font-bold text-gray-900 mb-2'>{member.name}</h3>
+                          <p className='text-gray-600 font-medium mb-4'>{member.role}</p>
+                          <div className='flex justify-center gap-4'>
+                            {[CiTwitter, BiLogoInstagram, FiLinkedin].map((Icon, iconIndex) => (
+                              <button 
+                                key={iconIndex}
+                                className='w-10 h-10 rounded-full bg-gray-100 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-500 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:text-white group'
+                              >
+                                <Icon className='text-lg' />
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            {/* Navigation dots */}
+            <div className="flex justify-center mt-12 gap-3" data-glide-el="controls[nav]">
+              {[...Array(5)].map((_, index) => (
+                <button
+                  key={index}
+                  className="w-3 h-3 rounded-full bg-gray-300 hover:bg-blue-500 transition-all duration-300"
+                  data-glide-dir={`=${index}`}
+                  aria-label={`Go to slide ${index + 1}`}
+                >
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section ref={featuresRef} className='grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12'>
+          {features.map((feature, index) => (
+            <div key={index} className='group text-center'>
+              <div className='relative inline-block mb-6'>
+                <div className='absolute inset-0 bg-gradient-to-br from-gray-400 to-gray-600 rounded-full blur-sm group-hover:blur-md transition-all duration-300'></div>
+                <div className='relative w-20 h-20 bg-gradient-to-br from-gray-500 to-gray-700 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300'>
+                  <div className='w-14 h-14 bg-black rounded-full flex items-center justify-center'>
+                    {feature.icon}
+                  </div>
+                </div>
+              </div>
+              <h3 className='text-lg lg:text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300'>
+                {feature.title}
+              </h3>
+              <p className='text-gray-600 leading-relaxed'>
+                {feature.description}
+              </p>
+            </div>
+          ))}
+        </section>
       </div>
-{/* 2 */}
-      <div className='flex justify-center items-center mt-[3rem] gap-x-20'>
-
-    <div className='flex justify-center items-center flex-col w-[12rem] rounded-md  h-[12rem] border border-1 border-[#a4a4a4] '>
-      <div className=' bg-[#444444]  h-[5rem] w-[5rem] flex justify-center items-center rounded-full '>
-        <div className='bg-black h-[3.5rem] w-[3.5rem] flex justify-center items-center rounded-full'>
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
-  <g clip-path="url(#clip0_120_1380)">
-    <path d="M11.6666 31.6667C13.5076 31.6667 15 30.1743 15 28.3333C15 26.4924 13.5076 25 11.6666 25C9.8257 25 8.33331 26.4924 8.33331 28.3333C8.33331 30.1743 9.8257 31.6667 11.6666 31.6667Z" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M28.3333 31.6667C30.1743 31.6667 31.6667 30.1743 31.6667 28.3333C31.6667 26.4924 30.1743 25 28.3333 25C26.4924 25 25 26.4924 25 28.3333C25 30.1743 26.4924 31.6667 28.3333 31.6667Z" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M8.33331 28.3335H6.99998C5.89541 28.3335 4.99998 27.4381 4.99998 26.3335V21.6668M3.33331 8.3335H19.6666C20.7712 8.3335 21.6666 9.22893 21.6666 10.3335V28.3335M15 28.3335H25M31.6667 28.3335H33C34.1046 28.3335 35 27.4381 35 26.3335V18.3335M35 18.3335H21.6666M35 18.3335L30.5826 10.9712C30.2211 10.3688 29.5701 10.0002 28.8676 10.0002H21.6666" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M8 28H6.66667C5.5621 28 4.66667 27.1046 4.66667 26V21.3333M3 8H19.3333C20.4379 8 21.3333 8.89543 21.3333 10V28M15 28H24.6667M32 28H32.6667C33.7712 28 34.6667 27.1046 34.6667 26V18M34.6667 18H21.3333M34.6667 18L30.2493 10.6377C29.8878 10.0353 29.2368 9.66667 28.5343 9.66667H21.3333" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M5 11.8182H11.6667" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M1.81818 15.4545H8.48484" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M5 19.0909H11.6667" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </g>
-  <defs>
-    <clipPath id="clip0_120_1380">
-      <rect width="40" height="40" fill="white"/>
-    </clipPath>
-  </defs>
-        </svg>
-        </div>
-      </div>
-      <h1 className='text-[2rem] font-extrabold'>10.5K</h1>
-      <p className='font-bold text-[0.8rem]'>sallers active our site</p>
-    </div>
-
-    <div className='flex justify-center items-center flex-col rounded-md w-[12rem] h-[12rem] border border-1 border-[#a4a4a4] bg-[#DB4444] '>
-      <div className=' bg-[#ffc1c1]  h-[5rem] w-[5rem] flex justify-center items-center rounded-full '>
-        <div className='bg-[#FFFFFF] h-[3.5rem] w-[3.5rem] flex justify-center items-center rounded-full'>
-        <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44" fill="none">
-  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22 3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41Z" stroke="black" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M27.6 16.0017C27.2377 15.3734 26.7113 14.8554 26.0772 14.5032C25.443 14.151 24.725 13.9779 24 14.0023H20C18.9391 14.0023 17.9217 14.4236 17.1716 15.1735C16.4214 15.9234 16 16.9406 16 18.0011C16 19.0617 16.4214 20.0788 17.1716 20.8288C17.9217 21.5787 18.9391 22 20 22H24C25.0609 22 26.0783 22.4213 26.8284 23.1712C27.5786 23.9212 28 24.9383 28 25.9989C28 27.0594 27.5786 28.0766 26.8284 28.8265C26.0783 29.5764 25.0609 29.9977 24 29.9977H20C19.275 30.0221 18.557 29.849 17.9228 29.4968C17.2887 29.1446 16.7623 28.6266 16.4 27.9983" stroke="black" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M22 9V13.3333M22 30.6667V35" stroke="black" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-        </div>
-      </div>
-      <h1 className='text-[2rem] font-extrabold'>33k</h1>
-      <p className='font-bold text-[0.8rem]'>Mopnthly Produduct Sale</p>
-    </div>
-
-    <div className='flex justify-center items-center flex-col w-[12rem] rounded-md  h-[12rem] border border-1 border-[#a4a4a4] '>
-      <div className=' bg-[#444444]  h-[5rem] w-[5rem] flex justify-center items-center rounded-full '>
-        <div className='bg-black text-white  h-[3.5rem] w-[3.5rem] flex justify-center items-center rounded-full'>
-      <TbShoppingBag className='w-[2.5rem] h-[2.5rem]' />
-        </div>
-      </div>
-      <h1 className='text-[2rem] font-extrabold'>45.5k</h1>
-      <p className='font-bold text-[0.8rem]'>Customer active in our site</p>
-    </div>
-
-    <div className='flex justify-center items-center flex-col  w-[12rem]  rounded-md h-[12rem] border border-1 border-[#a4a4a4] '>
-      <div className=' bg-[#444444]  h-[5rem] w-[5rem] flex justify-center items-center rounded-full '>
-        <div className='bg-black text-white h-[3.5rem] w-[3.5rem] flex justify-center items-center rounded-full'>
-      <TbMoneybag className='w-[2.5rem] h-[2.5rem]'/>
-        </div>
-      </div>
-      <h1 className='text-[2rem] font-extrabold'>25k</h1>
-      <p className='font-bold text-[0.8rem]'>Anual gross sale in our site</p>
-    </div>
-
-
-      </div>
-{/* 3 */}
-<div>
-  
-
-<div className="relative  glide-02 mt-[5rem]">
-        {/*    <!-- Slides --> */}
-        <div className="overflow-hidden mb-[6rem]" data-glide-el="track">
-          <ul className="whitespace-no-wrap flex-no-wrap [backface-visibility: hidden] [transform-style: preserve-3d] [touch-action: pan-Y] [will-change: transform] relative flex w-full overflow-hidden p-0">
-            <li>
- <div className='flex gap-x-8 justify-center items-center'>
-<div className='flex flex-col gap-y-2'>
-  <img src={women3} className='w-[14rem] h-[24rem] fill-current' alt=""/>
-  <h1 className='font-bold'>Tom Cruise</h1>
-  <p className='text-[0.8rem] font-bold'>Founder & Chairman</p>
-  <div className='flex gap-x-3 font-bold'>
-    <CiTwitter/>
-    <BiLogoInstagram/>
-    <FiLinkedin/>
-  </div>
-</div>
-<div className='flex flex-col gap-y-2'>
-  <img src={men1} className='w-[18rem] h-[24rem] fill-current' alt=""/>
-  <h1 className='font-bold'>Emma Watson</h1>
-  <p className='text-[0.8rem] font-bold'>Managing Director</p>
-  <div className='flex gap-x-3 font-bold'>
-    <CiTwitter/>
-    <BiLogoInstagram/>
-    <FiLinkedin/>
-  </div>
-</div>
-<div className='flex flex-col gap-y-2'>
-  <img src={Men2} className='w-[20rem] h-[24rem] fill-current' alt=""/>
-  <h1 className='font-bold'>Will Smith</h1>
-  <p className='text-[0.8rem] font-bold'>Product Designer</p>
-  <div className='flex gap-x-3 font-bold'>
-    <CiTwitter/>
-    <BiLogoInstagram/>
-    <FiLinkedin/>
-  </div>
-</div>
-
-</div>
-            </li>
-
-            <li>
-            <div className='flex gap-x-8 justify-center items-center'>
-  
-  <div className='flex flex-col gap-y-2'>
-    <img src={women3} className='w-[14rem] h-[24rem] fill-current' alt=""/>
-    <h1 className='font-bold'>Tom Cruise</h1>
-    <p className='text-[0.8rem] font-bold'>Founder & Chairman</p>
-    <div className='flex gap-x-3 font-bold'>
-      <CiTwitter/>
-      <BiLogoInstagram/>
-      <FiLinkedin/>
-    </div>
-  </div>
-  <div className='flex flex-col gap-y-2'>
-    <img src={men1} className='w-[18rem] h-[24rem] fill-current' alt=""/>
-    <h1 className='font-bold'>Emma Watson</h1>
-    <p className='text-[0.8rem] font-bold'>Managing Director</p>
-    <div className='flex gap-x-3 font-bold'>
-      <CiTwitter/>
-      <BiLogoInstagram/>
-      <FiLinkedin/>
-    </div>
-  </div>
-  <div className='flex flex-col gap-y-2'>
-    <img src={Men2} className='w-[20rem] h-[24rem] fill-current' alt=""/>
-    <h1 className='font-bold'>Will Smith</h1>
-    <p className='text-[0.8rem] font-bold'>Product Designer</p>
-    <div className='flex gap-x-3 font-bold'>
-      <CiTwitter/>
-      <BiLogoInstagram/>
-      <FiLinkedin/>
-    </div>
-  </div>
-  
-  
-  </div>
-            </li>
-
-            <li>
-            <div className='flex gap-x-8 justify-center items-center'>
-  
-  <div className='flex flex-col gap-y-2'>
-    <img src={women3} className='w-[14rem] h-[24rem] fill-current' alt=""/>
-    <h1 className='font-bold'>Tom Cruise</h1>
-    <p className='text-[0.8rem] font-bold'>Founder & Chairman</p>
-    <div className='flex gap-x-3 font-bold'>
-      <CiTwitter/>
-      <BiLogoInstagram/>
-      <FiLinkedin/>
-    </div>
-  </div>
-  <div className='flex flex-col gap-y-2'>
-    <img src={men1} className='w-[18rem] h-[24rem] fill-current' alt=""/>
-    <h1 className='font-bold'>Emma Watson</h1>
-    <p className='text-[0.8rem] font-bold'>Managing Director</p>
-    <div className='flex gap-x-3 font-bold'>
-      <CiTwitter/>
-      <BiLogoInstagram/>
-      <FiLinkedin/>
-    </div>
-  </div>
-  <div className='flex flex-col gap-y-2'>
-    <img src={Men2} className='w-[20rem] h-[24rem] fill-current' alt=""/>
-    <h1 className='font-bold'>Will Smith</h1>
-    <p className='text-[0.8rem] font-bold'>Product Designer</p>
-    <div className='flex gap-x-3 font-bold'>
-      <CiTwitter/>
-      <BiLogoInstagram/>
-      <FiLinkedin/>
-    </div>
-  </div>
-  </div>
-            </li>
-
-            <li>
-            <div className='flex gap-x-8 justify-center items-center'>
-  
-  <div className='flex flex-col gap-y-2'>
-    <img src={women3} className='w-[14rem] h-[24rem] fill-current' alt=""/>
-    <h1 className='font-bold'>Tom Cruise</h1>
-    <p className='text-[0.8rem] font-bold'>Founder & Chairman</p>
-    <div className='flex gap-x-3 font-bold'>
-      <CiTwitter/>
-      <BiLogoInstagram/>
-      <FiLinkedin/>
-    </div>
-  </div>
-  <div className='flex flex-col gap-y-2'>
-    <img src={men1} className='w-[18rem] h-[24rem] fill-current' alt=""/>
-    <h1 className='font-bold'>Emma Watson</h1>
-    <p className='text-[0.8rem] font-bold'>Managing Director</p>
-    <div className='flex gap-x-3 font-bold'>
-      <CiTwitter/>
-      <BiLogoInstagram/>
-      <FiLinkedin/>
-    </div>
-  </div>
-  <div className='flex flex-col gap-y-2'>
-    <img src={Men2} className='w-[20rem] h-[24rem] fill-current' alt=""/>
-    <h1 className='font-bold'>Will Smith</h1>
-    <p className='text-[0.8rem] font-bold'>Product Designer</p>
-    <div className='flex gap-x-3 font-bold'>
-      <CiTwitter/>
-      <BiLogoInstagram/>
-      <FiLinkedin/>
-    </div>
-  </div>
-  
-  
-  </div>
-            </li>
-
-            <li>
-            <div className='flex gap-x-8 justify-center items-center'>
-  
-  <div className='flex flex-col gap-y-2'>
-    <img src={women3} className='w-[14rem] h-[24rem] fill-current' alt=""/>
-    <h1 className='font-bold'>Tom Cruise</h1>
-    <p className='text-[0.8rem] font-bold'>Founder & Chairman</p>
-    <div className='flex gap-x-3 font-bold'>
-      <CiTwitter/>
-      <BiLogoInstagram/>
-      <FiLinkedin/>
-    </div>
-  </div>
-  <div className='flex flex-col gap-y-2'>
-    <img src={men1} className='w-[18rem] h-[24rem] fill-current' alt=""/>
-    <h1 className='font-bold'>Emma Watson</h1>
-    <p className='text-[0.8rem] font-bold'>Managing Director</p>
-    <div className='flex gap-x-3 font-bold'>
-      <CiTwitter/>
-      <BiLogoInstagram/>
-      <FiLinkedin/>
-    </div>
-  </div>
-  <div className='flex flex-col gap-y-2'>
-    <img src={Men2} className='w-[20rem] h-[24rem] fill-current' alt=""/>
-    <h1 className='font-bold'>Will Smith</h1>
-    <p className='text-[0.8rem] font-bold'>Product Designer</p>
-    <div className='flex gap-x-3 font-bold'>
-      <CiTwitter/>
-      <BiLogoInstagram/>
-      <FiLinkedin/>
-    </div>
-  </div>
-  
-  
-  </div>
-            </li>
-          </ul>
-        </div>
-        {/*    <!-- Indicators --> */}
-        <div
-          className="absolute bottom-0 flex items-center justify-center w-full gap-2"
-          data-glide-el="controls[nav]"
-        >
-          <button
-            className="p-4 group"
-            data-glide-dir="=0"
-            aria-label="goto slide 1"
-          >
-            <span className="block w-2 h-2 transition-colors duration-300 rounded-full bg-white/20 ring-1 ring-slate-700 focus:outline-none"></span>
-          </button>
-          <button
-            className="p-4 group"
-            data-glide-dir="=1"
-            aria-label="goto slide 2"
-          >
-            <span className="block w-2 h-2 transition-colors duration-300 rounded-full bg-white/20 ring-1 ring-slate-700 focus:outline-none"></span>
-          </button>
-          <button
-            className="p-4 group"
-            data-glide-dir="=2"
-            aria-label="goto slide 3"
-          >
-            <span className="block w-2 h-2 transition-colors duration-300 rounded-full bg-white/20 ring-1 ring-slate-700 focus:outline-none"></span>
-          </button>
-          <button
-            className="p-4 group"
-            data-glide-dir="=3"
-            aria-label="goto slide 4"
-          >
-            <span className="block w-2 h-2 transition-colors duration-300 rounded-full bg-white/20 ring-1 ring-slate-700 focus:outline-none"></span>
-          </button>
-        </div>
-      </div>
-      </div>
-{/* 5 */}
-
-<div className='flex justify-center items-center mt-[3rem] gap-[5.5rem]'>
-
-<div className='flex justify-center text-center items-center flex-col gap-y-4 rounded-md  h-[12rem] '>
-  <div className=' bg-[#444444]  h-[5rem] w-[5rem] flex justify-center items-center rounded-full '>
-    <div className='bg-black h-[3.5rem] w-[3.5rem] flex justify-center items-center rounded-full'>
-    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
-<g clip-path="url(#clip0_120_1380)">
-<path d="M11.6666 31.6667C13.5076 31.6667 15 30.1743 15 28.3333C15 26.4924 13.5076 25 11.6666 25C9.8257 25 8.33331 26.4924 8.33331 28.3333C8.33331 30.1743 9.8257 31.6667 11.6666 31.6667Z" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M28.3333 31.6667C30.1743 31.6667 31.6667 30.1743 31.6667 28.3333C31.6667 26.4924 30.1743 25 28.3333 25C26.4924 25 25 26.4924 25 28.3333C25 30.1743 26.4924 31.6667 28.3333 31.6667Z" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M8.33331 28.3335H6.99998C5.89541 28.3335 4.99998 27.4381 4.99998 26.3335V21.6668M3.33331 8.3335H19.6666C20.7712 8.3335 21.6666 9.22893 21.6666 10.3335V28.3335M15 28.3335H25M31.6667 28.3335H33C34.1046 28.3335 35 27.4381 35 26.3335V18.3335M35 18.3335H21.6666M35 18.3335L30.5826 10.9712C30.2211 10.3688 29.5701 10.0002 28.8676 10.0002H21.6666" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M8 28H6.66667C5.5621 28 4.66667 27.1046 4.66667 26V21.3333M3 8H19.3333C20.4379 8 21.3333 8.89543 21.3333 10V28M15 28H24.6667M32 28H32.6667C33.7712 28 34.6667 27.1046 34.6667 26V18M34.6667 18H21.3333M34.6667 18L30.2493 10.6377C29.8878 10.0353 29.2368 9.66667 28.5343 9.66667H21.3333" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M5 11.8182H11.6667" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M1.81818 15.4545H8.48484" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M5 19.0909H11.6667" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-<defs>
-<clipPath id="clip0_120_1380">
-  <rect width="40" height="40" fill="white"/>
-</clipPath>
-</defs>
-    </svg>
-    </div>
-  </div>
-  <h1 className='text-[1rem] font-extrabold'>FREE AND FAST DELIVERY</h1>
-  <p className='text-[0.8rem]'>Free delivery for all orders over $140</p>
-</div>
-
-<div className='flex justify-center text-center items-center flex-col rounded-md  gap-y-4 h-[12rem] '>
-  <div className=' bg-[#444444]  h-[5rem] w-[5rem] flex justify-center items-center rounded-full '>
-    <div className='bg-black h-[3.5rem] w-[3.5rem] flex justify-center items-center rounded-full'>
-    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
-  <g clip-path="url(#clip0_888_3534)">
-    <path d="M13.3337 25.0001C13.3337 23.1591 11.8413 21.6667 10.0003 21.6667C8.15938 21.6667 6.66699 23.1591 6.66699 25.0001V28.3334C6.66699 30.1744 8.15938 31.6667 10.0003 31.6667C11.8413 31.6667 13.3337 30.1744 13.3337 28.3334V25.0001Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M33.3337 25.0001C33.3337 23.1591 31.8413 21.6667 30.0003 21.6667C28.1594 21.6667 26.667 23.1591 26.667 25.0001V28.3334C26.667 30.1744 28.1594 31.6667 30.0003 31.6667C31.8413 31.6667 33.3337 30.1744 33.3337 28.3334V25.0001Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M6.66699 25.0001V20.0001C6.66699 16.4639 8.07175 13.0725 10.5722 10.572C13.0727 8.07151 16.4641 6.66675 20.0003 6.66675C23.5365 6.66675 26.9279 8.07151 29.4284 10.572C31.9289 13.0725 33.3337 16.4639 33.3337 20.0001V25.0001" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M30 31.6667C30 32.9928 28.9464 34.2646 27.0711 35.2023C25.1957 36.14 22.6522 36.6667 20 36.6667" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </g>
-  <defs>
-    <clipPath id="clip0_888_3534">
-      <rect width="40" height="40" fill="white"/>
-    </clipPath>
-  </defs>
-</svg>
-    </div>
-  </div>
-  <h1 className='text-[1rem] font-extrabold'>24/7 CUSTOMER SERVICE</h1>
-  <p className='text-[0.8rem]'>Friendly 24/7 customer support</p>
-</div>
-
-<div className='flex justify-center text-center items-center flex-col rounded-md  gap-y-4 h-[12rem] '>
-  <div className=' bg-[#444444]  h-[5rem] w-[5rem] flex justify-center items-center rounded-full '>
-    <div className='bg-black h-[3.5rem] w-[3.5rem] flex justify-center items-center rounded-full'>
-    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
-  <path d="M8.09943 30.5992L8.0992 30.5991C7.22647 29.9483 6.42586 28.9206 5.84306 27.759C5.26022 26.5973 4.91699 25.3451 4.91699 24.2666V11.8666C4.91699 9.50736 6.67182 6.96177 8.89149 6.13513L8.89245 6.13477L17.2087 3.01826C17.2088 3.01823 17.2089 3.0182 17.2089 3.01817C17.9624 2.73661 18.9619 2.5874 19.9837 2.5874C21.0054 2.5874 22.0049 2.73661 22.7584 3.01817C22.7585 3.0182 22.7585 3.01823 22.7586 3.01826L31.0749 6.13477L31.0758 6.13513C33.2955 6.96177 35.0503 9.50736 35.0503 11.8666V24.2499C35.0503 25.3371 34.7069 26.5892 34.1244 27.7483C33.5419 28.9073 32.7414 29.9313 31.8681 30.5824L31.8679 30.5826L24.7012 35.9326L24.7012 35.9325L24.695 35.9373C23.4123 36.9264 21.7243 37.4332 20.0003 37.4332C18.2777 37.4332 16.5855 36.927 15.2652 35.9486C15.265 35.9484 15.2649 35.9483 15.2647 35.9482L8.09943 30.5992ZM17.7422 4.43145L17.7415 4.4317L9.42487 7.54837L9.42416 7.54863C8.59658 7.86019 7.85535 8.52248 7.32443 9.29061C6.79333 10.059 6.43366 10.9898 6.43366 11.8832V24.2666C6.43366 25.161 6.74424 26.1892 7.20124 27.101C7.65813 28.0126 8.29361 28.8722 9.00118 29.4005L9.00122 29.4006L16.1676 34.7503C17.2296 35.5445 18.6286 35.9249 20.0024 35.9249C21.3764 35.9249 22.7786 35.5445 23.8481 34.7516L23.8494 34.7506L31.0161 29.4006L31.017 29.3999C31.7317 28.8638 32.3672 28.005 32.8225 27.0943C33.2779 26.1837 33.5837 25.16 33.5837 24.2666V11.8666C33.5837 10.9804 33.2232 10.0538 32.6929 9.28645C32.1624 8.51889 31.4226 7.85396 30.5979 7.5338L30.598 7.53376L30.5925 7.5317L22.2758 4.41503L22.2758 4.41495L22.2667 4.41174C21.6286 4.18651 20.8005 4.08314 20.001 4.08532C19.2024 4.0875 18.3755 4.19514 17.7422 4.43145Z" fill="#FAFAFA" stroke="#FAFAFA"/>
-  <path d="M17.4135 21.0536L17.7671 21.4071L18.1206 21.0536L24.4039 14.7703C24.692 14.4822 25.1754 14.4822 25.4635 14.7703C25.7516 15.0583 25.7516 15.5417 25.4635 15.8298L18.2968 22.9965C18.1455 23.1478 17.9583 23.2167 17.7671 23.2167C17.5758 23.2167 17.3886 23.1478 17.2373 22.9965L14.5539 20.3131C14.2659 20.0251 14.2659 19.5417 14.5539 19.2536C14.842 18.9655 15.3254 18.9655 15.6135 19.2536L17.4135 21.0536Z" fill="#FAFAFA" stroke="#FAFAFA"/>
-</svg>
-    </div>
-  </div>
-  <h1 className='text-[1rem] font-extrabold'>MONEY BACK GUARANTEE</h1>
-  <p className='text-[0.8rem]'>We reurn money within 30 days</p>
-</div>
-
-
-  </div>
-
-
     </div>
   )
 }
